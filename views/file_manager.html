@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>图库管理power by www.nbnat.com</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui/css/layui.css" />
+    <style>
+        .layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0;}
+        .layui-elip{overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:100px;}
+    </style>
+</head>
+
+<body style='padding:10px'>
+<button type="button" class="layui-hide" id="test1"></button>
+<div class="layui-fluid">
+    <div id="fileManager" lay-filter="test"></div>
+</div>
+</body>
+<script src="https://www.layuicdn.com/layui/layui.js"></script>
+<script>
+    layui.extend({'fileManager': '/static/layui_exts/fileManager/fileManager'});
+    layui.use(['fileManager', 'layer', 'upload'], function () {
+        var fileManager = layui.fileManager
+            , $ = layui.$
+            , upload = layui.upload
+            , layer = layui.layer;
+        $('title').html($('title').html() + ' version:' + fileManager.v);
+        var upIns = upload.render({
+            elem: '#test1' //绑定元素
+            , url: 'data.php?action=upload' //上传接口
+            , field: 'file[]'
+        })
+        fileManager.render({
+            elem: '#fileManager'
+            , method: 'post'
+            , id: 'fmTest'
+            , btn_upload: true
+            , btn_create: true
+            , icon_url: 'ico/'
+            , url: '/file_json'
+            , thumb: {'nopic': 'https://www.layuicdn.com/layui/images/face/62.gif', 'width': 100, 'height': 100}
+            , parseData: function (res) {
+                let _res = [];
+                _res.code = 0;
+                _res.data = res.images;
+                _res.count = res.count
+                return _res;
+            }
+            , done: function (res, curr, count) {}
+            , page: {limit: 30,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']}
+            , where: {}
+        });
+        fileManager.on('pic(test)', function (obj) {
+            var data = obj.data;
+            layer.alert(JSON.stringify(data), {
+                title: '当前数据：'
+            });
+        });
+        fileManager.on('uploadfile(test)', function (obj) {
+            upIns.config.data = {'path': obj.path};
+            upIns.config.done = function (res) {
+                fileManager.reload('fmTest');
+            }
+            var e = document.createEvent("MouseEvents");
+            e.initEvent("click", true, true);
+            document.getElementById("test1").dispatchEvent(e)
+        });
+        fileManager.on('new_dir(test)', function (obj) {
+            layer.msg("没有这个功能哦");
+        });
+        $(document).on('click','.picview',function(res){
+            let name = $(this).data('name');
+            layui.data('_fm', {key: '_picview_name',value: name});
+            layer.open({
+                type:2
+                , area: ['620px', '600px']
+                ,content: ['pop.html', 'no']
+            })
+        });
+        window.callback = function(res){
+            let name = layui.data('_fm')._picview_name;
+            console.log(name)
+            $('.picview[data-name='+name+']').find('img').attr('src',res.thumb)
+            $('.picview[data-name='+name+']').find('p').text(res.name);
+            layui.data('_fm',null);
+        }
+    });
+</script>
+</html>
