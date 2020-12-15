@@ -128,7 +128,8 @@ type FileManager struct {
 }
 
 func GetFileByPage(page, limit int) ([]FileManager, int) {
-	count, _ := levelDB.GetServer().FindByPrefix(util.DupIndexKey)
+	//count, _ := levelDB.GetServer().FindByPrefix(util.DupIndexKey)
+	count, _ := levelDB.GetServer().FindByPrefix(util.PicKey)
 	if page < 1 {
 		page = 1
 	}
@@ -140,7 +141,8 @@ func GetFileByPage(page, limit int) ([]FileManager, int) {
 	if end > util.InitialID+uint64(len(count))-1 {
 		end = util.InitialID + uint64(len(count)) // 因取值是[)的 因此结尾要多1
 	}
-	datas, err := levelDB.GetServer().FindLimit(util.DupIndexKey+":"+gconv.String(begin), util.DupIndexKey+":"+gconv.String(end))
+	//datas, err := levelDB.GetServer().FindLimit(util.DupIndexKey+":"+gconv.String(begin), util.DupIndexKey+":"+gconv.String(end))
+	datas, err := levelDB.GetServer().FindLimit(util.PicKey+":"+gconv.String(begin), util.PicKey+":"+gconv.String(end))
 	if err != nil {
 		logging.Error(err.Error())
 	}

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui/css/layui.css" />
     <style>
         .layui-upload-img{width: 92px; height: 92px; margin: 0 10px 10px 0;}
-        .layui-elip{overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:100px;}
+        .layui-elip{overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:220px;}
     </style>
 </head>
 
@@ -42,7 +42,7 @@
             , btn_create: true
             , icon_url: 'ico/'
             , url: '/file_json'
-            , thumb: {'nopic': 'https://www.layuicdn.com/layui/images/face/62.gif', 'width': 100, 'height': 100}
+            , thumb: {'nopic': 'https://www.layuicdn.com/layui/images/face/62.gif', 'width': 220, 'height':220}
             , parseData: function (res) {
                 let _res = [];
                 _res.code = 0;
@@ -51,7 +51,7 @@
                 return _res;
             }
             , done: function (res, curr, count) {}
-            , page: {limit: 30,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']}
+            , page: {limit: 14,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']}
             , where: {}
         });
         fileManager.on('pic(test)', function (obj) {

@@ -164,33 +164,38 @@ func getFileFromChan() {
 
 func WalkDir(dir string) {
 	err := filepath.Walk(dir, func(p string, info os.FileInfo, err error) error {
+		if err != nil{
+			logging.Error(err.Error())
+			return nil
+		}
 		if runtime.GOOS == "darwin" {
 			if strings.HasSuffix(info.Name(), ".app") || strings.Contains(p, ".app") {
 				return nil
 			}
 		}
-		if info.Size() < 1 || info.IsDir() {
-			return nil
-		}
-		fmt.Println("发现文件", p)
-		key := util.GetDupSucKey(p) // 判断是否已完成的
-		has, err := levelDB.GetServer().IsExistFromLevelDB(key)
-		if err != nil {
-			logging.Fatal(err)
-			return err
-		}
-		if has == false {
-			dir, _ := path.Split(p)
-			fileChan <- File{
-				ID:      FileID,
-				Name:    info.Name(),
-				Dir:     dir,
-				Path:    p,
-				Size:    info.Size(),
-				Status:  util.StatusBegin,
-				ModTime: info.ModTime().Format("2006-01-02 15:04:05"),
+		if info.IsDir() == false{
+			if info.Size() > 0{
+				fmt.Println("发现文件", p)
+				key := util.GetDupSucKey(p) // 判断是否已完成的
+				has, err := levelDB.GetServer().IsExistFromLevelDB(key)
+				if err != nil {
+					logging.Fatal(err)
+					return err
+				}
+				if has == false {
+					dir, _ := path.Split(p)
+					fileChan <- File{
+						ID:      FileID,
+						Name:    info.Name(),
+						Dir:     dir,
+						Path:    p,
+						Size:    info.Size(),
+						Status:  util.StatusBegin,
+						ModTime: info.ModTime().Format("2006-01-02 15:04:05"),
+					}
+					atomic.AddUint64(&FileID, 1)
+				}
 			}
-			atomic.AddUint64(&FileID, 1)
 		}
 		return nil
 	})
