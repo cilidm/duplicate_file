@@ -120,7 +120,7 @@ func Server() {
 	r.GET("video_play", func(c *gin.Context) {
 		index := c.Query("index")
 		f := service.GetIndexDetail(index)
-		f.Path = "play?name=" + f.Path	// 路径问题，需要使用c.File转换一下
+		f.Path = "/play?name=" + f.Path // 路径问题，需要使用c.File转换一下
 		c.HTML(http.StatusOK, "video_play.html", f)
 	})
 

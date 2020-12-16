@@ -16,3 +16,4 @@
 runtime/*
 
 lock
+.idea/*
