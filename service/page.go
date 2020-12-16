@@ -30,8 +30,8 @@ func GetDupByPage(page, limit int) ([]interface{}, int) {
 	for _, v := range datas {
 		var f File
 		json.Unmarshal([]byte(v), &f)
-		if OS.IsWindows(){
-			f.Dir = strings.TrimRight(f.Path,f.Name)
+		if OS.IsWindows() {
+			f.Dir = strings.TrimRight(f.Path, f.Name)
 		}
 		resp = append(resp, f)
 	}
@@ -57,8 +57,8 @@ func GetRepeatByPage(page, limit int) ([]interface{}, int) {
 	for _, v := range datas {
 		var f File
 		json.Unmarshal([]byte(v), &f)
-		if OS.IsWindows(){
-			f.Dir = strings.TrimRight(f.Path,f.Name)
+		if OS.IsWindows() {
+			f.Dir = strings.TrimRight(f.Path, f.Name)
 		}
 		resp = append(resp, f)
 	}
@@ -81,12 +81,13 @@ func GetPicByPage(page, limit int) ([]interface{}, int) {
 	}
 	datas, _ := levelDB.GetServer().FindLimit(util.PicKey+":"+gconv.String(begin), util.PicKey+":"+gconv.String(end))
 	var resp []interface{}
-	for _, v := range datas {
+	for k, v := range datas {
 		var f File
 		json.Unmarshal([]byte(v), &f)
-		if OS.IsWindows(){
-			f.Dir = strings.TrimRight(f.Path,f.Name)
+		if OS.IsWindows() {
+			f.Dir = strings.TrimRight(f.Path, f.Name)
 		}
+		f.Path = "/detail?index=" + k // 用索引替换path
 		resp = append(resp, f)
 	}
 	util.SortBodyByMd(resp)
@@ -108,12 +109,13 @@ func GetVideoByPage(page, limit int) ([]interface{}, int) {
 	}
 	datas, _ := levelDB.GetServer().FindLimit(util.VideoKey+":"+gconv.String(begin), util.VideoKey+":"+gconv.String(end))
 	var resp []interface{}
-	for _, v := range datas {
+	for k, v := range datas {
 		var f File
 		json.Unmarshal([]byte(v), &f)
-		if OS.IsWindows(){
-			f.Dir = strings.TrimRight(f.Path,f.Name)
+		if OS.IsWindows() {
+			f.Dir = strings.TrimRight(f.Path, f.Name)
 		}
+		f.Path = "video_play?index=" + k
 		resp = append(resp, f)
 	}
 	util.SortBodyByMd(resp)
@@ -125,6 +127,7 @@ type FileManager struct {
 	Name  string `json:"name"`
 	Type  string `json:"type"`
 	Path  string `json:"path"`
+	Index string `json:"index"`
 }
 
 func GetFileByPage(page, limit int) ([]FileManager, int) {
@@ -147,7 +150,7 @@ func GetFileByPage(page, limit int) ([]FileManager, int) {
 		logging.Error(err.Error())
 	}
 	var resp []FileManager
-	for _, v := range datas {
+	for k, v := range datas {
 		var (
 			f     File
 			thumb string
@@ -165,9 +168,10 @@ func GetFileByPage(page, limit int) ([]FileManager, int) {
 		}
 		resp = append(resp, FileManager{
 			Thumb: thumb,
-			Name: f.Name,
-			Type: ext,
-			Path: f.Path,
+			Name:  f.Name,
+			Type:  ext,
+			Path:  f.Path,
+			Index: "/detail?index=" + k,
 		})
 	}
 	return resp, len(count)
@@ -182,4 +186,18 @@ func OmitStr(str string, num int) (newStr string) {
 		newStr = str
 	}
 	return
+}
+
+func GetIndexDetail(key string) (f File) {
+	data, err := levelDB.GetServer().FindByKey(key)
+	if err != nil {
+		logging.Error(err.Error())
+		return f
+	}
+	err = json.Unmarshal(data, &f)
+	if err != nil {
+		logging.Error(err.Error())
+		return f
+	}
+	return f
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ckyplayer组件使用示例</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="Author" content="larry" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui/css/layui.css" media="all"/>
+    <style>
+        body{
+            background: #f2f2f2;
+        }
+        .video{
+            display: block;
+            width: 80%;
+            height: auto;
+        }
+        .margin15{
+            margin: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-container">
+    <div class="layui-row layui-col-space15 margin15">
+        <section class="layui-card">
+            <div class="layui-card-body">
+                <div class="video" id="video" data-url="{{.Path}}" style="width: 100%;"></div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="https://www.layuicdn.com/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.config({
+        base: '/static/layui_exts/lib/'
+    }).extend({
+        ckplayer: 'ckplayer/ckplayer'
+    }).use(['jquery', 'ckplayer'], function() {
+        var $ = layui.$,
+            ckplayer = layui.ckplayer;
+        var vUrl = $('#video').data('url'),
+            videoObject = {
+                container: '#video',
+                loop: true,
+                autoplay: true,
+                video: [
+                    [vUrl, 'video/mp4']
+                ]
+            };
+        var player = new ckplayer(videoObject);
+    });
+</script>
+</body>
+
+</html>

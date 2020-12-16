@@ -56,8 +56,11 @@
         });
         fileManager.on('pic(test)', function (obj) {
             var data = obj.data;
-            layer.alert(JSON.stringify(data), {
-                title: '当前数据：'
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['420px', '420px'], //宽高
+                content: '<img src="'+data.index+'" width="100%"/>'
             });
         });
         fileManager.on('uploadfile(test)', function (obj) {

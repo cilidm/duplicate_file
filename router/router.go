@@ -15,22 +15,6 @@ func Server() {
 	r.Static("/static", "static")
 	r.LoadHTMLGlob("views/*")
 
-	r.GET("/file", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "file_manager.html", gin.H{})
-	})
-
-	r.POST("/file_json", func(c *gin.Context) {
-		page, _ := strconv.Atoi(c.PostForm("page"))
-		limit, _ := strconv.Atoi(c.PostForm("limit"))
-		resp, count := service.GetFileByPage(page, limit)
-		c.JSON(http.StatusOK, gin.H{"count": count, "images": resp})
-	})
-
-	r.GET("show", func(c *gin.Context) {
-		imageName := c.Query("imageName")
-		c.File(imageName)
-	})
-
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "start.html", gin.H{})
 	})
@@ -107,6 +91,42 @@ func Server() {
 			data = append(data, v.(service.File))
 		}
 		api.SuccessResp(c).SetCode(0).SetData(data).SetCount(count).WriteJsonExit()
+	})
+
+	// 图片文件展示
+	r.GET("/file", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "file_manager.html", gin.H{})
+	})
+
+	r.POST("/file_json", func(c *gin.Context) {
+		page, _ := strconv.Atoi(c.PostForm("page"))
+		limit, _ := strconv.Atoi(c.PostForm("limit"))
+		resp, count := service.GetFileByPage(page, limit)
+		c.JSON(http.StatusOK, gin.H{"count": count, "images": resp})
+	})
+
+	// 显示硬盘图片
+	r.GET("show", func(c *gin.Context) {
+		imageName := c.Query("imageName")
+		c.File(imageName)
+	})
+
+	r.GET("detail", func(c *gin.Context) {
+		index := c.Query("index")
+		f := service.GetIndexDetail(index)
+		c.File(f.Path)
+	})
+
+	r.GET("video_play", func(c *gin.Context) {
+		index := c.Query("index")
+		f := service.GetIndexDetail(index)
+		f.Path = "play?name=" + f.Path	// 路径问题，需要使用c.File转换一下
+		c.HTML(http.StatusOK, "video_play.html", f)
+	})
+
+	r.GET("play", func(c *gin.Context) {
+		name := c.Query("name")
+		c.File(name)
 	})
 
 	r.Run(":8000")
