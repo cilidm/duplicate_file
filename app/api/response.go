@@ -6,10 +6,10 @@ import (
 )
 
 type CommonResp struct {
-	Code  int           `json:"code"` //响应编码 0 成功 500 错误 403 无权限  -1  失败
-	Msg   string        `json:"msg"`  //消息
-	Data  interface{}   `json:"data"` //数据内容
-	Count int           `json:"count,omitempty"`
+	Code  int         `json:"code"` //响应编码 0 成功 500 错误 403 无权限  -1  失败
+	Msg   string      `json:"msg"`  //消息
+	Data  interface{} `json:"data"` //数据内容
+	Count int         `json:"count,omitempty"`
 }
 
 type Resp struct {

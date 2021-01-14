@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>树状结构插件jstree - 光年(Light Year Admin)后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+    <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+    <meta name="author" content="yinqi">
+    <link href="http://lyear.itshubao.com/iframe/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://example.itshubao.com/demo/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="http://libs.itshubao.com/jstree/style.min.css" rel="stylesheet">
+    <link href="http://lyear.itshubao.com/iframe/css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+{{/*        <div class="col-md-12">*/}}
+{{/*            <div class="card">*/}}
+{{/*                <div class="card-header"><h4>树状结构插件 jstree</h4></div>*/}}
+{{/*                <div class="card-body">*/}}
+
+{{/*                    <p>插件使用jstree 3.3.9，官网地址：<a href="http://jstree.com/" target="_blank">http://jstree.com/</a></p>*/}}
+
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*        </div>*/}}
+
+{{/*        <div class="col-lg-6">*/}}
+{{/*            <div class="card">*/}}
+{{/*                <div class="card-header"><h4>类型树视图</h4></div>*/}}
+{{/*                <div class="card-body">*/}}
+{{/*                    <div id="types-tree"></div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*        </div>*/}}
+
+{{/*        <div class="col-lg-6">*/}}
+{{/*            <div class="card">*/}}
+{{/*                <div class="card-header"><h4>复选框树视图</h4></div>*/}}
+{{/*                <div class="card-body">*/}}
+{{/*                    <div id="checkbox-tree"></div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*        </div>*/}}
+
+{{/*        <div class="col-lg-6">*/}}
+{{/*            <div class="card">*/}}
+{{/*                <div class="card-header"><h4>拖放树视图</h4></div>*/}}
+{{/*                <div class="card-body">*/}}
+{{/*                    <div id="drag-drop-tree"></div>*/}}
+{{/*                </div>*/}}
+{{/*            </div>*/}}
+{{/*        </div>*/}}
+
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header"><h4>Ajax树视图</h4></div>
+                <div class="card-body">
+                    <div id="ajax-tree"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="http://lyear.itshubao.com/iframe/js/jquery.min.js"></script>
+<script type="text/javascript" src="http://libs.itshubao.com/jstree/jstree.min.js"></script>
+<script>
+    (function() {
+        "use strict";
+        /* -- Basic Tree -- */
+        $('#types-tree').jstree({
+            'core' : {
+                'themes' : {
+                    'responsive': false
+                },
+                'data' : [
+                    {
+                        "text" : "Project",
+                        "state" : {"opened" : true },
+                        "icon" : "mdi mdi-folder-outline",
+                        "children" : [
+                            {
+                                "text" : "Assets",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-folder-outline",
+                                "children" : [
+                                    { "text" : "CSS", "state" : { "opened" : true }, "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "JS", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Fonts", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Images", "icon" : "mdi mdi-file-outline" },
+                                    {
+                                        "text" : "Plugins",
+                                        "state" : { "opened" : true },
+                                        "icon" : "mdi mdi-folder-outline",
+                                        "children" : [
+                                            { "text" : "jQuery", "icon" : "mdi mdi-file-outline" },
+                                            { "text" : "Bootstrap", "state" : { "selected" : true, "opened" : true }, "icon" : "mdi mdi-file-outline" }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "text" : "Icons",
+                                "icon" : "mdi mdi-opacity"
+                            },
+                            {
+                                "text" : "Events",
+                                "icon" : "mdi mdi-calendar"
+                            },
+                            {
+                                "text" : "UI Kits",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-package-variant-closed",
+                                "children" : [
+                                    { "text" : "Buttons", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Badges", "icon" : "mdi mdi-file-outline" }
+                                ]
+                            },
+                            {
+                                "text" : "Forms",
+                                "icon" : "mdi mdi-file-document"
+                            },
+                            {
+                                "text" : "Charts",
+                                "icon" : "mdi mdi-chart-pie"
+                            },
+                            {
+                                "text" : "Pages",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-book-open-variant",
+                                "children" : [
+                                    { "text" : "Coming Soon", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Maintenance", "icon" : "mdi mdi-file-outline" }
+                                ]
+                            },
+                            {
+                                "text" : "Tables",
+                                "icon" : "mdi mdi-table"
+                            },
+                        ]
+                    },
+                    {
+                        "text" : "Documents",
+                        "state" : { "opened" : true },
+                        "icon" : "mdi mdi-folder-outline"
+                    }
+                ]
+            },
+            'plugins' : ['types']
+        });
+        /* -- Checkbox Tree -- */
+        $('#checkbox-tree').jstree({
+            'core' : {
+                'themes' : {
+                    'responsive': false
+                },
+                'data' : [
+                    {
+                        "text" : "Project",
+                        "state" : {"opened" : true },
+                        "icon" : "mdi mdi-folder-outline",
+                        "children" : [
+                            {
+                                "text" : "Assets",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-folder-outline",
+                                "children" : [
+                                    { "text" : "CSS", "state" : { "opened" : true }, "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "JS", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Fonts", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Images", "icon" : "mdi mdi-file-outline" },
+                                    {
+                                        "text" : "Plugins",
+                                        "state" : { "opened" : true },
+                                        "icon" : "mdi mdi-folder-outline",
+                                        "children" : [
+                                            { "text" : "jQuery", "icon" : "mdi mdi-file-outline" },
+                                            { "text" : "Bootstrap", "state" : { "selected" : true, "opened" : true }, "icon" : "mdi mdi-file-outline" }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "text" : "Icons",
+                                "icon" : "mdi mdi-opacity"
+                            },
+                            {
+                                "text" : "Events",
+                                "icon" : "mdi mdi-calendar"
+                            },
+                            {
+                                "text" : "UI Kits",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-package-variant-closed",
+                                "children" : [
+                                    { "text" : "Buttons", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Badges", "icon" : "mdi mdi-file-outline" }
+                                ]
+                            },
+                            {
+                                "text" : "Forms",
+                                "icon" : "mdi mdi-file-document"
+                            },
+                            {
+                                "text" : "Charts",
+                                "icon" : "mdi mdi-chart-pie"
+                            },
+                            {
+                                "text" : "Pages",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-book-open-variant",
+                                "children" : [
+                                    { "text" : "Coming Soon", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Maintenance", "icon" : "mdi mdi-file-outline" }
+                                ]
+                            },
+                            {
+                                "text" : "Tables",
+                                "icon" : "mdi mdi-table"
+                            },
+                        ]
+                    },
+                    {
+                        "text" : "Documents",
+                        "state" : { "opened" : true },
+                        "icon" : "mdi mdi-folder-outline"
+                    }
+                ]
+            },
+            'plugins' : ['types', 'checkbox']
+        });
+        /* -- Drag & Drop Tree -- */
+        $('#drag-drop-tree').jstree({
+            'core' : {
+                'themes' : {
+                    'responsive': false
+                },
+                'check_callback' : true,
+                'data' : [
+                    {
+                        "text" : "Project",
+                        "state" : {"opened" : true },
+                        "icon" : "mdi mdi-folder-outline",
+                        "children" : [
+                            {
+                                "text" : "Assets",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-folder-outline",
+                                "children" : [
+                                    { "text" : "CSS", "state" : { "opened" : true }, "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "JS", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Fonts", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Images", "icon" : "mdi mdi-file-outline" },
+                                    {
+                                        "text" : "Plugins",
+                                        "state" : { "opened" : true },
+                                        "icon" : "mdi mdi-folder-outline",
+                                        "children" : [
+                                            { "text" : "jQuery", "icon" : "mdi mdi-file-outline" },
+                                            { "text" : "Bootstrap", "state" : { "selected" : true, "opened" : true }, "icon" : "mdi mdi-file-outline" }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "text" : "Icons",
+                                "icon" : "mdi mdi-opacity"
+                            },
+                            {
+                                "text" : "Events",
+                                "icon" : "mdi mdi-calendar"
+                            },
+                            {
+                                "text" : "UI Kits",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-package-variant-closed",
+                                "children" : [
+                                    { "text" : "Buttons", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Badges", "icon" : "mdi mdi-file-outline" }
+                                ]
+                            },
+                            {
+                                "text" : "Forms",
+                                "icon" : "mdi mdi-file-document"
+                            },
+                            {
+                                "text" : "Charts",
+                                "icon" : "mdi mdi-chart-pie"
+                            },
+                            {
+                                "text" : "Pages",
+                                "state" : { "opened" : true },
+                                "icon" : "mdi mdi-book-open-variant",
+                                "children" : [
+                                    { "text" : "Coming Soon", "icon" : "mdi mdi-file-outline" },
+                                    { "text" : "Maintenance", "icon" : "mdi mdi-file-outline" }
+                                ]
+                            },
+                            {
+                                "text" : "Tables",
+                                "icon" : "mdi mdi-table"
+                            },
+                        ]
+                    },
+                    {
+                        "text" : "Documents",
+                        "state" : { "opened" : true },
+                        "icon" : "mdi mdi-folder-outline"
+                    }
+                ]
+            },
+            'plugins' : ['dnd']
+        });
+        /* -- Ajax Tree -- */
+        $('#ajax-tree').jstree({
+            'core' : {
+                'animation' : 0,
+                'check_callback' : true,
+                'force_text' : true,
+                'themes' : {
+                    'responsive': false
+                },
+                'data' : {
+                    'url' : function (node) {
+                        return node.id === '#' ? 'http://example.itshubao.com/test/ajax_roots.json' : 'http://example.itshubao.com/test/ajax_children.json';
+                    },
+                    'data' : function (node) {
+                        return { 'id' : node.id };
+                    }
+                }
+            },
+            "types" : {
+                'default' : {
+                    'icon' : 'mdi mdi-folder-outline'
+                },
+                'file' : {
+                    'icon' : 'mdi mdi-file-outline'
+                }
+            },
+            "plugins" : [ "contextmenu", "dnd", "search", "state", "types", "wholerow" ]
+        });
+    })();
+</script>
+</body>
+</html>

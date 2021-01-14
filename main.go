@@ -1,35 +1,36 @@
 package main
 
 import (
-	"duplicate_file/router"
-	"duplicate_file/service"
-	"duplicate_file/util"
+	"duplicate_file/app/db"
+	"duplicate_file/app/router"
+	"duplicate_file/app/service"
+	"duplicate_file/app/util"
 	"flag"
-	"github.com/cilidm/toolbox/levelDB"
 	"os"
 )
 
 var (
 	dir   string
 	isNew bool
+	md    bool
 )
 
 func init() {
-	levelDB.InitServer("runtime/")
+	db.InitMysql()
+	flag.BoolVar(&isNew, "n", false, "是否创建新任务")
 	flag.StringVar(&dir, "p", "", "查找路径")
-	flag.BoolVar(&isNew, "n", false, "是否新开启任务")
+	flag.BoolVar(&md, "md", false, "是否校验md")
 	flag.Parse()
-	util.CheckTemplate()
 }
 
 func main() {
-	if isNew && util.CheckFileIsExist("lock") {
-		os.Remove("lock")
+	if isNew && util.CheckFileIsExist(util.LockKey) {
+		os.Remove(util.LockKey)
 	}
-	if util.CheckFileIsExist("lock") == false {
-		if service.InitSearchFiles(dir) == false {
+	if util.CheckFileIsExist(util.LockKey) == false {
+		if service.InitSearchFiles(dir, md) == false {
 			return
 		}
 	}
-	router.Server()
+	router.RunServer()
 }

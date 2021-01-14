@@ -42,7 +42,7 @@
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('是否删除文件' + data.name, function(index){
-                    $.post("/del",{"path":data.dir + data.name},function (resp) {
+                    $.post("/del",{"path":data.path},function (resp) {
                         layer.close(index);
                         if(resp.code == 200){
                             layer.msg("操作成功",{icon: 1,shade:0.3,time:1000},function () {

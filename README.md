@@ -1,4 +1,7 @@
 > 开始： 
+>
+> 修改app/db/mysql下数据库配置
+>
 > 初次执行 go run main.go -n -p /home/src
 >
 > 再次执行 go run main.go
@@ -12,7 +15,4 @@
 
 > runtime文件夹保存日志及levelDB数据文件
 
-> 测试环境 darwin10.15.5  linux  win10
-
-> todo 现在保存的key->val 只需要带索引的，其他的删除以节省空间
-> 新任务生成时删除全部旧数据
+> 测试环境 darwin10.15.5  

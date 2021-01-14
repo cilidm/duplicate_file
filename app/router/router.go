@@ -1,15 +1,16 @@
 package router
 
 import (
-	"duplicate_file/api"
-	"duplicate_file/service"
+	"duplicate_file/app/api"
+	"duplicate_file/app/service"
+	"duplicate_file/app/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"strconv"
 )
 
-func Server() {
+func RunServer() {
 	r := gin.Default()
 
 	r.Static("/static", "static")
@@ -26,12 +27,12 @@ func Server() {
 	r.GET("/json", func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
-		resp, count := service.GetRepeatByPage(page, limit)
-		var data []service.File
-		for _, v := range resp {
-			data = append(data, v.(service.File))
+		resp, count, err := service.GetRepeatFile(page, limit)
+		if err != nil {
+			api.ErrorResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
+			return
 		}
-		api.SuccessResp(c).SetCode(0).SetData(data).SetCount(count).WriteJsonExit()
+		api.SuccessResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
 	})
 
 	r.POST("/del", func(c *gin.Context) {
@@ -55,12 +56,12 @@ func Server() {
 	r.GET("/index_json", func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
-		resp, count := service.GetDupByPage(page, limit)
-		var data []service.File
-		for _, v := range resp {
-			data = append(data, v.(service.File))
+		resp, count, err := service.GetFileInfoAll(page, limit)
+		if err != nil {
+			api.ErrorResp(c).SetCode(0).SetData(resp).SetCount(0).WriteJsonExit()
+			return
 		}
-		api.SuccessResp(c).SetCode(0).SetData(data).SetCount(count).WriteJsonExit()
+		api.SuccessResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
 	})
 
 	r.GET("/pic", func(c *gin.Context) {
@@ -70,12 +71,14 @@ func Server() {
 	r.GET("/pic_json", func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
-		resp, count := service.GetPicByPage(page, limit)
-		var data []service.File
-		for _, v := range resp {
-			data = append(data, v.(service.File))
+		filters := make([]interface{}, 0)
+		filters = append(filters, "ext in (?)", util.PicExt)
+		resp, count, err := service.GetFileInfo(page, limit, filters)
+		if err != nil {
+			api.ErrorResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
+			return
 		}
-		api.SuccessResp(c).SetCode(0).SetData(data).SetCount(count).WriteJsonExit()
+		api.SuccessResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
 	})
 
 	r.GET("/video", func(c *gin.Context) {
@@ -85,12 +88,14 @@ func Server() {
 	r.GET("/video_json", func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 		limit, _ := strconv.Atoi(c.DefaultQuery("limit", "20"))
-		resp, count := service.GetVideoByPage(page, limit)
-		var data []service.File
-		for _, v := range resp {
-			data = append(data, v.(service.File))
+		filters := make([]interface{}, 0)
+		filters = append(filters, "ext in (?)", util.VideoExt)
+		resp, count, err := service.GetFileInfo(page, limit, filters)
+		if err != nil {
+			api.ErrorResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
+			return
 		}
-		api.SuccessResp(c).SetCode(0).SetData(data).SetCount(count).WriteJsonExit()
+		api.SuccessResp(c).SetCode(0).SetData(resp).SetCount(count).WriteJsonExit()
 	})
 
 	// 图片文件展示
@@ -101,7 +106,11 @@ func Server() {
 	r.POST("/file_json", func(c *gin.Context) {
 		page, _ := strconv.Atoi(c.PostForm("page"))
 		limit, _ := strconv.Atoi(c.PostForm("limit"))
-		resp, count := service.GetFileByPage(page, limit)
+		resp, count, err := service.GetFileShowPage(page, limit)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{"count": count, "images": resp})
+			return
+		}
 		c.JSON(http.StatusOK, gin.H{"count": count, "images": resp})
 	})
 
@@ -113,13 +122,13 @@ func Server() {
 
 	r.GET("detail", func(c *gin.Context) {
 		index := c.Query("index")
-		f := service.GetIndexDetail(index)
+		f := service.GetByID(index)
 		c.File(f.Path)
 	})
 
 	r.GET("video_play", func(c *gin.Context) {
 		index := c.Query("index")
-		f := service.GetIndexDetail(index)
+		f := service.GetByID(index)
 		f.Path = "/play?name=" + f.Path // 路径问题，需要使用c.File转换一下
 		c.HTML(http.StatusOK, "video_play.html", f)
 	})
