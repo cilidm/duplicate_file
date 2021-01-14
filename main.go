@@ -19,7 +19,7 @@ func init() {
 	db.InitMysql()
 	flag.BoolVar(&isNew, "n", false, "是否创建新任务")
 	flag.StringVar(&dir, "p", "", "查找路径")
-	flag.BoolVar(&md, "md", false, "是否校验md")
+	flag.BoolVar(&md, "md", true, "是否校验md")
 	flag.Parse()
 }
 
