@@ -26,6 +26,7 @@ func init() {
 func main() {
 	if isNew && util.CheckFileIsExist(util.LockKey) {
 		os.Remove(util.LockKey)
+		db.DropDB() // 创建新任务，清除旧数据
 	}
 	if util.CheckFileIsExist(util.LockKey) == false {
 		if service.InitSearchFiles(dir, md) == false {

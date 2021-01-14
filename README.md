@@ -18,3 +18,5 @@
 > runtime文件夹保存日志及levelDB数据文件
 
 > 测试环境 darwin10.15.5  
+
+![avatar](doc/index.png)

@@ -31,6 +31,10 @@ func InitMysql() {
 	return
 }
 
+func DropDB() {
+	DB.Delete(model.File{})
+}
+
 func CloseMysql() {
 	if err := DB.Close(); err != nil {
 		panic("关闭数据库失败:" + err.Error())
