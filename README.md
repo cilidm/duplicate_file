@@ -16,6 +16,7 @@
 - 🐳 **容器化部署**：提供 Docker 镜像，一键部署
 - 📊 **详细报告**：生成详细的扫描报告和统计信息
 - 🔒 **安全可靠**：文件操作前自动备份，支持撤销操作
+- 🎯 **智能差异显示**：重复文件名差异高亮，快速识别细微差别
 
 ## 🚀 快速开始
 
@@ -23,8 +24,8 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/cilidm/DuplicateHunter.git
-cd DuplicateHunter
+git clone https://github.com/cilidm/duplicate_file.git
+cd duplicate_file
 
 # 构建镜像
 docker build -t duplicatehunter:latest .
@@ -44,17 +45,17 @@ open http://localhost:8080
 
 ```bash
 # 克隆项目
-git clone https://github.com/cilidm/DuplicateHunter.git
-cd DuplicateHunter
+git clone https://github.com/cilidm/duplicate_file.git
+cd duplicate_file
 
 # 安装依赖
 pip install -r requirements.txt
 
 # 启动 Web 服务
-python app/web/app.py
+python start.py web
 
 # 或使用命令行工具
-python cli.py --scan /path/to/directory
+python start.py scan /path/to/directory
 ```
 
 ## 📖 使用指南
@@ -64,7 +65,7 @@ python cli.py --scan /path/to/directory
 1. **选择扫描目录**：在 Web 界面中选择要扫描的目录
 2. **配置扫描选项**：设置文件大小限制、文件类型过滤等
 3. **开始扫描**：点击开始按钮，实时查看扫描进度
-4. **查看结果**：浏览重复文件列表，预览文件内容
+4. **查看结果**：浏览重复文件列表，智能差异高亮显示
 5. **执行操作**：选择删除、移动或备份重复文件
 
 ### 命令行使用
@@ -133,15 +134,13 @@ DuplicateHunter/
 │   ├── hasher.py          # 文件哈希计算
 │   ├── web/               # Web 界面
 │   │   ├── app.py
-│   │   ├── templates/
-│   │   └── static/
-│   ├── cli/               # 命令行工具
-│   │   └── cli.py
-│   └── utils/             # 工具函数
+│   │   └── templates/
+│   └── utils.py           # 工具函数
 ├── tests/                 # 测试文件
-├── docker/               # Docker 配置
-├── docs/                 # 文档
-└── examples/             # 使用示例
+├── examples/              # 使用示例
+├── start.py               # 快速启动脚本
+├── cli.py                 # 命令行工具
+└── config.yaml            # 配置文件
 ```
 
 ## 🔍 算法说明
@@ -165,8 +164,8 @@ DuplicateHunter/
 
 ```bash
 # 克隆项目
-git clone https://github.com/cilidm/DuplicateHunter.git
-cd DuplicateHunter
+git clone https://github.com/cilidm/duplicate_file.git
+cd duplicate_file
 
 # 使用 Docker Compose 启动
 docker-compose up -d
@@ -176,17 +175,6 @@ docker-compose logs -f
 
 # 停止服务
 docker-compose down
-```
-
-### 自定义配置
-
-```bash
-# 编辑配置文件
-cp config.yaml config.local.yaml
-# 修改 config.local.yaml 中的配置
-
-# 使用自定义配置启动
-docker-compose up -d
 ```
 
 ## 📱 Web 界面特性
@@ -213,13 +201,8 @@ docker-compose up -d
 
 ```bash
 # 克隆项目
-git clone https://github.com/cilidm/DuplicateHunter.git
-cd DuplicateHunter
-
-# 创建虚拟环境
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# 或 venv\Scripts\activate  # Windows
+git clone https://github.com/cilidm/duplicate_file.git
+cd duplicate_file
 
 # 方式一：使用设置脚本（推荐）
 python setup_dev.py
@@ -232,7 +215,7 @@ pip install pytest black flake8 isort
 pytest tests/
 
 # 启动开发服务器
-python app/web/app.py
+python start.py web
 ```
 
 ## 📋 待办事项
@@ -253,6 +236,7 @@ python app/web/app.py
 | Docker 支持 | ✅ | ❌ | ❌ |
 | 批量操作 | ✅ | ✅ | ✅ |
 | 多算法支持 | ✅ | ✅ | ❌ |
+| 智能差异显示 | ✅ | ❌ | ❌ |
 | 开源免费 | ✅ | ✅ | ❌ |
 
 ## 📄 许可证
@@ -265,8 +249,8 @@ python app/web/app.py
 
 ## 📞 联系我们
 
-- 🐛 Issues: [GitHub Issues](https://github.com/cilidm/DuplicateHunter/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/cilidm/DuplicateHunter/discussions)
+- 🐛 Issues: [GitHub Issues](https://github.com/cilidm/duplicate_file/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/cilidm/duplicate_file/discussions)
 - 📧 Email: 通过 GitHub Issues 联系
 
 ---
