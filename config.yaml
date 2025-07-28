@@ -1,0 +1,47 @@
+# DuplicateHunter 配置文件
+
+# 扫描配置
+scan:
+  algorithm: "md5"          # 哈希算法: md5, sha1, sha256
+  min_size: 1024           # 最小文件大小（字节）
+  max_size: null           # 最大文件大小（字节），null 表示无限制
+  extensions: []           # 文件扩展名过滤，空数组表示所有文件
+  exclude_dirs:            # 排除的目录
+    - ".git"
+    - "node_modules"
+    - "__pycache__"
+    - ".vscode"
+    - ".idea"
+    - "Thumbs.db"
+    - ".DS_Store"
+
+# 性能配置
+performance:
+  threads: 4               # 扫描线程数
+  chunk_size: 8192         # 文件读取块大小（字节）
+  memory_limit: "1GB"      # 内存使用限制
+
+# Web 服务配置
+web:
+  host: "0.0.0.0"         # 监听地址
+  port: 8080              # 监听端口
+  debug: false            # 调试模式
+
+# 文件操作配置
+file_operations:
+  backup_dir: "backups"   # 默认备份目录
+  auto_backup: true       # 删除前自动备份
+  keep_strategy: "first"  # 保留策略: first, oldest, newest
+
+# 报告配置
+reports:
+  output_dir: "reports"   # 报告输出目录
+  default_format: "html"  # 默认报告格式: html, json, csv
+  include_thumbnails: false  # 是否包含缩略图（图片文件）
+
+# 日志配置
+logging:
+  level: "INFO"           # 日志级别: DEBUG, INFO, WARNING, ERROR
+  file: "logs/app.log"    # 日志文件路径
+  max_size: "10MB"        # 日志文件最大大小
+  backup_count: 5         # 保留的日志文件数量
